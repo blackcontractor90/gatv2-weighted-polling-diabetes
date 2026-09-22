@@ -97,13 +97,11 @@ for binary clinical classification.
 
 ## License
 
-[TODO: MIT, or your preferred license]
+MIT
 
 ## Citation
 
 If you use this code, please cite:
-
-[TODO: full citation once the manuscript has a DOI/volume/issue]
 
 A citable, versioned archive of this repository is available via Zenodo:
 [TODO: Zenodo DOI badge/link, added at submission]
