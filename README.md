@@ -97,11 +97,19 @@ for binary clinical classification.
 
 ## License
 
-MIT
+MIT License. See `LICENSE` for details.
 
 ## Citation
 
-If you use this code, please cite:
+If you use this code, please cite the manuscript:
+
+Morsidi, F. Does Graph Attention Help Weighted-Polling Classification on
+Small Clinical Data? A Leakage-Aware Evaluation on the Pima Indians
+Diabetes Dataset. *Bulletin of the National Research Centre* (submitted).
+[TODO: update with volume/issue/DOI once assigned]
 
 A citable, versioned archive of this repository is available via Zenodo:
-[TODO: Zenodo DOI badge/link, added at submission]
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22911107.svg)](https://doi.org/10.5281/zenodo.22911107)
+
+https://doi.org/10.5281/zenodo.22911107
