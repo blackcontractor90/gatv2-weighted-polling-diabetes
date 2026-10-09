@@ -12,11 +12,6 @@
 #   2. Weighted-polling KNN/Naive Bayes classifier (Sec 3.4)
 #      -> ported from Classifier.java, generalized to N classes
 #
-# Reconstructed from the paper's spec since the original script
-# could not be located. Values (lr, epochs, dims, dropout) are
-# taken verbatim from the Methodology section; anything the paper
-# does not pin down (e.g. exact PyG conv kwargs) is flagged with
-# a comment rather than silently guessed.
 # ============================================================
 
 import numpy as np
