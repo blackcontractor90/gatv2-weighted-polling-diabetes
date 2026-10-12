@@ -106,7 +106,7 @@ If you use this code, please cite the manuscript:
 Morsidi, F. Does Graph Attention Help Weighted-Polling Classification on
 Small Clinical Data? A Leakage-Aware Evaluation on the Pima Indians
 Diabetes Dataset. *Bulletin of the National Research Centre* (submitted).
-[TODO: update with volume/issue/DOI once assigned]
+
 
 A citable, versioned archive of this repository is available via Zenodo:
 
