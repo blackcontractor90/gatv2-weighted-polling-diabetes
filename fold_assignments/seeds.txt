@@ -1,0 +1,8 @@
+dataset: pima (n = 768)
+scikit-learn version used to generate this file: 1.9.0
+repeats (seeds r): 0..2
+outer split: StratifiedKFold(n_splits=10, shuffle=True, random_state=r)
+inner split: StratifiedKFold(n_splits=5, shuffle=True, random_state=1000*(r+1)+f), f = outer fold 1..10
+GATv2 initialisation and training seed: r
+standard classifiers with a random state: random_state = r
+random encoder candidates: make_candidates(n_trials=24, seed=12345), identical in every repeat and fold

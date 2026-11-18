@@ -297,10 +297,12 @@ def run_repeat(r, X_raw, y, nc, cands, args, out_path):
     grids = std_grids()
     pred = {m: np.full(n, -1, dtype=np.int64) for m in ALL_MODELS}
     score = {m: np.full(n, np.nan) for m in ALL_MODELS}
+    outer_fold = np.full(n, -1, dtype=np.int64)
     chosen = []
     outer = StratifiedKFold(n_splits=args.outer, shuffle=True, random_state=r)
 
     for f, (tr, te) in enumerate(outer.split(X_raw, y), 1):
+        outer_fold[te] = f
         t0 = time.time()
         inner = StratifiedKFold(n_splits=args.inner, shuffle=True,
                                 random_state=1000 * (r + 1) + f)
@@ -339,6 +341,14 @@ def run_repeat(r, X_raw, y, nc, cands, args, out_path):
                              for gi in range(len(grid))})
             std_best[name] = gi
 
+        # NEW: per-candidate best inner score over the 20 polling configs, under BOTH criteria
+        # (each entry: [best inner accuracy, best inner macro-F1]); used for the candidate-budget analysis
+        inner_by_candidate = []
+        for ci in range(len(cands)):
+            accs = [accuracy_score(y[tr], gat_inner[ci][cfg][tr]) for cfg in POLL_CFGS]
+            f1s = [f1_score(y[tr], gat_inner[ci][cfg][tr], average="macro") for cfg in POLL_CFGS]
+            inner_by_candidate.append([float(max(accs)), float(max(f1s))])
+
         # ---------- refit on the whole outer-training set, score the outer-test fold ----------
         Xs = preprocess(X_raw, tr)
         gcache, emb_cache = {}, {}
@@ -365,12 +375,13 @@ def run_repeat(r, X_raw, y, nc, cands, args, out_path):
             tuned_polling=list(cfg_best), tuned_inner_score=float(inner_best),
             default_polling=list(cfg_def), raw_polling=list(cfg_raw),
             std={name: grids[name][gi] for name, gi in std_best.items()},
+            inner_by_candidate=inner_by_candidate,
             seconds=round(time.time() - t0, 1)))
         msg = "  ".join(f"{mm}={100 * accuracy_score(y[te], pred[mm][te]):.1f}"
                         for mm in ("GATv2-tuned", "GATv2-default", "Raw-polling", "LogReg", "SVM-RBF"))
         print(f"  repeat {r} outer fold {f}/{args.outer} ({time.time() - t0:.0f}s): test acc {msg}", flush=True)
 
-    np.savez(out_path, y=y, models=np.array(ALL_MODELS),
+    np.savez(out_path, y=y, models=np.array(ALL_MODELS), outer_fold=outer_fold,
              **{f"pred__{m}": pred[m] for m in ALL_MODELS},
              **{f"score__{m}": score[m] for m in ALL_MODELS})
     with open(out_path.replace(".npz", "_chosen.json"), "w") as fh:
